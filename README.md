@@ -135,7 +135,26 @@ Claims que trae el token emitido:
 - scope: los permisos que tiene ese usuario, en este caso, tanto lectura como escritura de blueprints se le asignan de forma fija a cualquiera que haga login, sin distinguir por usuario.
 
 3. Extender los scopes (`blueprints.read`, `blueprints.write`) para controlar otros endpoints de la API, del laboratorio P1 trabajado.
+
+- Se le agrego @PreAuthorize a los endpoints del controlador del Lab P1 (/api/v1/blueprints/**), que antes solo dependía de la regla genérica de SecurityConfig. Ahora los GET exigen scope de lectura y el POST (crear plano) y el PUT de puntos exigen scope de escritura.
+
+- Pruebas con autorización
+
+![Captura1](images/image.png)
+
+![Captura2](images/image2.png)
+
+![Captura3](images/image3.png)
+
+- Pruebas sin autorización
+
+![Captura4](images/image4.png)
+
+
 4. Modificar el tiempo de expiración del token y observar el efecto.
+
+
+
 5. Documentar en Swagger los endpoints de autenticación y de negocio.
 
 ---

@@ -12,6 +12,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -28,14 +29,16 @@ public class BlueprintsAPIController {
 
     @Operation(summary = "Obtener todos los blueprints")
 
-    // GET /blueprints
+    
     @GetMapping
+    @PreAuthorize("hasAuthority('SCOPE_blueprints.read')")
     public ResponseEntity<ApiResponse<Set<Blueprint>>> getAll() {
         return ResponseEntity.ok(ApiResponse.ok(services.getAllBlueprints()));
     }
 
-    // GET /blueprints/{author}
+    
     @GetMapping("/{author}")
+    @PreAuthorize("hasAuthority('SCOPE_blueprints.read')")
     public ResponseEntity<ApiResponse<Set<Blueprint>>> byAuthor(@PathVariable String author) {
         try {
             return ResponseEntity.ok(ApiResponse.ok(services.getBlueprintsByAuthor(author)));
@@ -44,8 +47,9 @@ public class BlueprintsAPIController {
         }
     }
 
-    // GET /blueprints/{author}/{bpname}
+    
     @GetMapping("/{author}/{bpname}")
+    @PreAuthorize("hasAuthority('SCOPE_blueprints.read')")
     public ResponseEntity<ApiResponse<Blueprint>>byAuthorAndName(@PathVariable String author, @PathVariable String bpname) {
         try {
             return ResponseEntity.ok(ApiResponse.ok(services.getBlueprint(author, bpname)));
@@ -62,6 +66,7 @@ public class BlueprintsAPIController {
 
     // POST /blueprints
     @PostMapping
+    @PreAuthorize("hasAuthority('SCOPE_blueprints.write')")
     public ResponseEntity<ApiResponse<Blueprint>> add(@Valid @RequestBody NewBlueprintRequest req) {
         try {
             Blueprint bp = new Blueprint(req.author(), req.name(), req.points());
@@ -74,6 +79,7 @@ public class BlueprintsAPIController {
 
     // PUT /blueprints/{author}/{bpname}/points
     @PutMapping("/{author}/{bpname}/points")
+    @PreAuthorize("hasAuthority('SCOPE_blueprints.write')")
     public ResponseEntity<ApiResponse<Void>> addPoint(@PathVariable String author, @PathVariable String bpname,
                                                         @RequestBody Point p) {
         try {
