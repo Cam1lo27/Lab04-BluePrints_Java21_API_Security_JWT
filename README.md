@@ -153,7 +153,19 @@ Claims que trae el token emitido:
 
 4. Modificar el tiempo de expiración del token y observar el efecto.
 
+- Se modifico el tiempo a 10 segundos
 
+![Captura5](images/image5.png)
+
+- Se verifica que durante esos 10 segundos si funciona el token 
+
+![Captura6](images/image6.png)
+
+- Se vuelve a verificar luego de los 10 segundos y ya no funcionaya que el token ya expiro.
+
+![Captura7](images/image7.png)
+
+- En conclusión el exp del JWT define su validez de forma autocontenida, sin depender del servidor ni del cliente. Con un TTL corto se comprobó en segundos cómo el mismo token pasa de 200 a 401 solo por el paso del tiempo. Esto confirma el modelo stateless de JWT y por qué el TTL es un balance entre seguridad y usabilidad.
 
 5. Documentar en Swagger los endpoints de autenticación y de negocio.
 
