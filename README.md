@@ -109,7 +109,31 @@ src/main/resources/
 
 ## Actividades propuestas
 1. Revisar el código de configuración de seguridad (`SecurityConfig`) e identificar cómo se definen los endpoints públicos y protegidos.
+
+- Endpoints públicos: se marcan las rutas de login y las de documentación (Swagger) como accesibles sin token, porque justo para pedir el token no puedes tenerlo aún, y la documentación debe poder verse libremente.
+
+- Endpoints protegidos por scope: todo lo que es parte de la API de negocio exige que el token traiga uno de los permisos de lectura o escritura definidos. Estos permisos no se configuran a mano en la seguridad: se generan automáticamente a partir de lo que el token dice que el usuario puede hacer (su "scope"), con un prefijo estándar que Spring agrega solo.
+
+- Regla por defecto: cualquier ruta que no esté explícitamente clasificada igual exige estar autenticado, aunque sin pedir un permiso específico.
+
+- Validación del token: se activa el modo de "servidor de recursos", que intercepta las peticiones, revisa el token que viene en la cabecera, lo valida contra la clave pública correspondiente y, si es válido, le asigna al usuario los permisos que traía ese token para que las reglas anteriores puedan aplicarse.
+
 2. Explorar el flujo de login y analizar las claims del JWT emitido.
+
+Flujo:
+
+- El cliente envía usuario y contraseña al endpoint de login.
+- Se valida esa credencial contra un servicio de usuarios en memoria (contraseñas guardadas ya hasheadas, no en texto plano).
+- Si es válida, se arma el conjunto de claims del token y se firma con la clave privada RSA que la app genera al arrancar.
+- Se responde con el token, su tipo (Bearer) y cuánto dura.
+
+Claims que trae el token emitido:
+
+- iss (issuer): identifica quién emitió el token, tomado de la configuración de la app.
+- sub (subject): el usuario que inició sesión.
+- iat / exp: momento de emisión y momento de expiración (el TTL también viene de configuración).
+- scope: los permisos que tiene ese usuario, en este caso, tanto lectura como escritura de blueprints se le asignan de forma fija a cualquiera que haga login, sin distinguir por usuario.
+
 3. Extender los scopes (`blueprints.read`, `blueprints.write`) para controlar otros endpoints de la API, del laboratorio P1 trabajado.
 4. Modificar el tiempo de expiración del token y observar el efecto.
 5. Documentar en Swagger los endpoints de autenticación y de negocio.
