@@ -196,6 +196,10 @@ Claims que trae el token emitido:
   la forma real del cuerpo de cada petición y respuesta, no solo un objeto
   genérico.
 
+![Captura8](images/image8.png)
+![Captura9](images/image9.png)
+![Captura10](images/image10.png)
+
 ---
 
 ## Lecturas recomendadas
