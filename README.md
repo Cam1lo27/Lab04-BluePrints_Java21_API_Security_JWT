@@ -169,6 +169,33 @@ Claims que trae el token emitido:
 
 5. Documentar en Swagger los endpoints de autenticación y de negocio.
 
+- Se configuró en `OpenApiConfig` un bean `OpenAPI` con un `SecurityScheme` de tipo
+  HTTP Bearer y formato JWT (`bearer-jwt`), aplicado como requisito de seguridad
+  global mediante `addSecurityItem`. Esto hace que en Swagger UI aparezca el botón
+  **Authorize** y que cada operación protegida muestre el candado.
+
+- El endpoint `POST /auth/login` se documentó con `@Operation`, ejemplos de
+  petición/respuesta y sus dos posibles códigos de estado (`200` con el token,
+  `401` si las credenciales son inválidas). No requiere autenticación previa,
+  ya que es el propio endpoint que la otorga.
+
+- Los controladores de negocio se documentaron por separado:
+  - `BlueprintController` (`/api/blueprints`), el controlador de ejemplo con
+    datos en memoria, agrupado bajo el tag **"1. Blueprints (demo)"**.
+  - `BlueprintsAPIController` (`/api/v1/blueprints`), el controlador real del
+    Lab P1, agrupado bajo el tag **"2. Blueprints (Lab P1)"**.
+
+  En ambos, cada operación indica en su descripción el scope que exige
+  (`blueprints.read` o `blueprints.write`) y sus `@ApiResponses` distinguen
+  explícitamente el `401` (token ausente/expirado) del `403` (token válido
+  pero sin el scope necesario) — la misma diferencia comprobada en las
+  pruebas de las actividades 3 y 4.
+
+- También se documentaron los DTOs (`ApiResponse`, `NewBlueprintRequest`,
+  `Blueprint`, `Point`) con `@Schema` y ejemplos, de modo que Swagger muestra
+  la forma real del cuerpo de cada petición y respuesta, no solo un objeto
+  genérico.
+
 ---
 
 ## Lecturas recomendadas

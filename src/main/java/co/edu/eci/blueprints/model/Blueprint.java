@@ -1,14 +1,22 @@
 package co.edu.eci.blueprints.model;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+@Schema(name = "Blueprint", description = "Plano identificado por autor y nombre, con su lista de puntos")
 public class Blueprint {
 
+    @Schema(description = "Autor del plano", example = "john")
     private String author;
+
+    @Schema(description = "Nombre del plano", example = "casa")
     private String name;
+
+    @Schema(description = "Puntos que componen el plano")
     private final List<Point> points = new ArrayList<>();
 
     public Blueprint(String author, String name, List<Point> pts) {
